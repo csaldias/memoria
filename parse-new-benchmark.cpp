@@ -23,8 +23,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    size_t post_context  = 5;
-    size_t pre_context   = 5;
+    size_t post_context  = 150;
+    //size_t pre_context   = 5;
     size_t step          = 3;
     size_t row_step      = 20;
 
@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     
     string index_suffix = ".sdsl";
     string index_file   = string(argv[1])+index_suffix;
-    csa_wt<wt_rlmn<>, 2048, 8> fm_index;
+    csa_wt<wt_rlmn<>, 2048, 2048> fm_index;
 
     if (!load_from_file(fm_index, index_file)) {
         if (VERBOSE) cout << "No index " << index_file << " located. Building index now." << endl;
@@ -128,12 +128,12 @@ int main(int argc, char** argv) {
             size_t right_border = post_context;
             size_t left_border  = 0;
             string s = extract(fm_index, fm_index[pos]+left_border, fm_index[pos]+right_border);
-            while (s.find("\n") == string::npos) {
-                left_border  += post_context+1;
-                right_border += post_context+1;
-                s.append(extract(fm_index, fm_index[pos]+left_border, fm_index[pos]+right_border));
-            }
-            size_t last_comma  = s.find_last_of('\n');
+            //while (s.find("\n") == string::npos) {
+            //    left_border  += post_context+1;
+            //    right_border += post_context+1;
+            //    s.append(extract(fm_index, fm_index[pos]+left_border, fm_index[pos]+right_border));
+            //}
+            size_t last_comma  = s.find_first_of('\n');
             size_t first_comma = s.find_last_of(',', last_comma-1)+1;
             string column_name = s.substr(first_comma, last_comma-first_comma);
             //cout << "Column name: " << column_name << endl;
