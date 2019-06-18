@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
         size_t pos = interval[0];
         //Ahora, obtenemos los nombres de las columnas dentro del rango
         size_t iterations = 0;
-        while (pos < interval[1]) {
+        while (pos <= interval[1]) {
             //Obtenemos el nombre de la columna del extremo izquierdo
             size_t right_border = post_context;
             size_t left_border  = 0;
