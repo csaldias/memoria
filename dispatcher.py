@@ -26,8 +26,9 @@ def search_thread(thread_id, query, files):
 		results = subprocess.check_output(['./search_index', query]+[file])
 		results = json.loads(results)
 
-		if not service_name in search_results: search_results[service_name] = {}
-		search_results[service_name][table_name] = results
+		if results: #We only add this file to the combined results if theres any result.
+			if not service_name in search_results: search_results[service_name] = {}
+			search_results[service_name][table_name] = results
 			
 
 	
