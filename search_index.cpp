@@ -17,9 +17,9 @@ using namespace std::chrono;
 
 int main(int argc, char** argv) {
     if (argc <  3) {
-        cout << "Usage " << argv[0] << " [sdsl_file] [query]" << endl;
+        cout << "Usage " << argv[0] << " [query] [sdsl_file ...]" << endl;
         cout << "    This program attempts to parse the columns of a" << endl;
-        cout << "    VOTable-based Compressed XML file." << endl;
+        cout << "    VOTable-based Compressed XML file(s)." << endl;
         return 1;
     }
 
@@ -31,8 +31,8 @@ int main(int argc, char** argv) {
     high_resolution_clock::time_point t1, t2;
     
     string index_suffix = ".sdsl";
-    string index_file   = argv[1];
-    string query        = argv[2];
+    string index_file   = argv[2];
+    string query        = argv[1];
     
     csa_wt<wt_huff<>, 16, 16> fm_index;
 
@@ -106,11 +106,13 @@ int main(int argc, char** argv) {
             stringstream output;
             output << "{";
             for(auto& x : column_count) {
-                output << x.first << ":" << x.second << ",";
+                output << "\"" << x.first << "\":" << x.second << ",";
             }
             output.seekp(-1,output.cur);
             output << '}';
             cout << output.str() << endl;
         }
+    } else {
+        cout << "{}" << endl;
     }
 }
