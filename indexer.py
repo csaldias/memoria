@@ -1,7 +1,7 @@
 #Spawn workers to create indexes based on VOTable files
 import multiprocessing
 from os import listdir
-from math import ceil
+from math import floor
 import subprocess
 
 dir_path   = "TAPFiles/"
@@ -17,7 +17,7 @@ file_num   = len(file_names)
 print("Detected {} files in {} directory.".format(file_num, dir_path))
 
 worker_num       = min(file_num,cpu_num)
-files_per_worker = ceil(file_num /worker_num)
+files_per_worker = floor(file_num /worker_num)
 if worker_num * files_per_worker == file_num:
 	print("Using {} workers, {} files per worker.".format(worker_num, files_per_worker))
 else:
