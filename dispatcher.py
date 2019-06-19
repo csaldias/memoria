@@ -1,11 +1,11 @@
 #Spawn workers to search a given query over the full index DB
 from os import listdir
 from math import ceil
-import subprocess, threading, multiprocessing, json
+import subprocess, threading, multiprocessing, json, sys
 
 index_path     = "Index/"
 search_threads = []
-query          = "ALMA"
+query          = sys.argv[1]
 search_results = {}
 
 def search_thread(thread_id, query, files):
