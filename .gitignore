@@ -2,3 +2,5 @@
 TAPFiles/
 
 Index/
+
+__pycache__/
