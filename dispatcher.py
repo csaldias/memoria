@@ -83,8 +83,7 @@ def do_search(query=None):
 	for x in search_threads:
 		x.join()
 
-	print("Response:")
-	print(json.dumps(search_results))
+	print("Sending response to client")
 
 	response = app.response_class(
         response=json.dumps(search_results),
