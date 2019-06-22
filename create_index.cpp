@@ -34,15 +34,17 @@ int main(int argc, char** argv) {
     string dir_prefix     = argv[1];
     string index_suffix   = ".sdsl";
     string colname_suffix = ".colname.dat";
+    string memory_suffix  = ".html";
 
     csa_wt<wt_huff<>, 16, 16> fm_index;
 
     //We iterate over the filenames given to us as parameters
     for(size_t index = 2; index < argc; index++) {
 	    //Let's open the file
-	    string file_path = string(argv[index]);
-	    string file_name = file_path.substr(file_path.find("/"));
+	    string file_path  = string(argv[index]);
+	    string file_name  = file_path.substr(file_path.find("/")+1);
 	    string index_file = dir_prefix+file_name+index_suffix;
+	    string mem_file   = "HTML/"+file_name.substr(0, file_name.find(".xml"));
 
 	    ifstream data_file;
 	    data_file.open(argv[index]);
@@ -106,11 +108,18 @@ int main(int argc, char** argv) {
 
 	    //Now, we compress the intermediate and store its compressed
 	    //representation into disk
-
+	    memory_monitor::start();
 	    construct_im(fm_index, bwt_intermediate.str(), 1); // generate index
 	    store_to_file(fm_index, index_file); // save it
-    
-    if (VERBOSE) cout << "Index construction complete, index requires " << size_in_mega_bytes(fm_index) << " MB." << endl;
-    if (VERBOSE) cout << "Index has size " << fm_index.size() << "." << endl;
+    	memory_monitor::stop();
+
+    	if (VERBOSE) cout << "Index construction complete, index requires " << size_in_mega_bytes(fm_index) << " MB." << endl;
+    	if (VERBOSE) cout << "Peak memory usage = " << memory_monitor::peak() / (1024*1024) << " MB." << std::endl;
+	    if (VERBOSE) cout << "Index has size " << fm_index.size() << "." << endl;
+
+	    ofstream cstofs(mem_file+".html");
+	    memory_monitor::write_memory_log<HTML_FORMAT>(cstofs);
+	    cstofs.close();
+	    util::clear(fm_index);
 	}
 }
